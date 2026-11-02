@@ -26,6 +26,14 @@ according to CPA2.1 at 2 digits classification level was considered. Comext data
 
 ## Frontend deployment authentication
 
+The `e2e-isolated` branch is for the public fork's isolated development test.
+Run both workflows on this branch, not `main`, to skip the production jobs.
+Its `192.168.55.0/24` virtual network is split into two `/25` subnets.
+The development frontend workflow resolves API Management in the configured
+resource group and injects its URL at build time instead of using the ISTAT APIs.
+The support resource group contains a dummy HTTP-triggered Consumption Logic App
+that returns HTTP 202 without sending email.
+
 The `.github/workflows/terra-frontend.yml` workflow uses PowerShell (`pwsh`) for all inline scripts and signs in to Microsoft Entra ID using `azure/login@v2` and GitHub OIDC, without a client secret. Configure the following in each GitHub environment (`development` and `production`):
 
 - Secrets: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`.

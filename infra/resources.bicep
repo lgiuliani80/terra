@@ -7,7 +7,7 @@ param azureMapsLocation string
 @description('Azure Front Door ID accepted by the APIM gateway policy. The header check is disabled when empty.')
 param azureFrontDoorId string = ''
 
-@description('Address space for the virtual network. It must contain at least two /24 subnets.')
+@description('Address space for the virtual network. It must contain at least two /25 subnets.')
 param virtualNetworkAddressPrefix string = '172.16.0.0/16'
 
 @description('Tags that will be applied to all resources')
@@ -48,7 +48,7 @@ var virtualNetworkName = resName.virtualNetwork ?? '${abbrs.networkVirtualNetwor
 var apiManagementNetworkSecurityGroupName = resName.apiManagementNetworkSecurityGroup ?? '${abbrs.networkNetworkSecurityGroups}apim-${resourceToken}'
 var caeIngressSubnetName = 'snet-cae-ingress'
 var apiManagementSubnetName = 'snet-apim'
-var subnetPrefixLength = 24
+var subnetPrefixLength = 25
 var apiDefinitionsConfig = loadJsonContent('../terra-apis/api-definitions.json')
 var operationPolicyXml = {
   'graph-analysis|health': loadTextContent('../terra-apis/policy/graph-analysis-health.xml')

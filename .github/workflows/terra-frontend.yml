@@ -34,6 +34,19 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Configure isolated API endpoints
+        shell: pwsh
+        env:
+          AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+        run: |
+          $gateway = az apim list --resource-group $Env:AZURE_RESOURCE_GROUP --query '[0].gatewayUrl' -o tsv --only-show-errors
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gateway)) {
+            throw 'Cannot resolve the isolated API Management gateway'
+          }
+          "VUE_APP_CLS_SERVER=$gateway/cls" >> $Env:GITHUB_ENV
+          "VUE_APP_R_SERVER=$gateway/time-series" >> $Env:GITHUB_ENV
+          "VUE_APP_PYTHON_SERVER=$gateway" >> $Env:GITHUB_ENV
+          npm config get registry
       - name: Get Static Web App deployment token
         id: deployment_token
         shell: pwsh

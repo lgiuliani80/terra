@@ -50,6 +50,13 @@ jobs:
       - name: Install azd
         uses: Azure/setup-azd@v2
 
+      - name: Inspect package repositories
+        shell: pwsh
+        run: |
+          npm config get registry
+          python -m pip config debug
+          Get-PSRepository | Select-Object Name, SourceLocation
+
       - name: Log in with Azure (Federated Credentials)
         run: |
           azd auth login `
