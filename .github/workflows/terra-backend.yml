@@ -40,12 +40,12 @@ jobs:
             throw 'AZURE_RESOURCE_GROUP must be configured'
           }
 
-          mkdir .azure/$Env:AZURE_ENV_NAME
-          $r = gc resnames.empty.json | ConvertFrom-Json
+          New-Item -ItemType Directory -Force ".azure/$Env:AZURE_ENV_NAME" | Out-Null
+          $r = Get-Content resnames.empty.json | ConvertFrom-Json
           $r.resourceGroup = $Env:AZURE_RESOURCE_GROUP
           # TODO: to be completed
 
-          $r | ConvertTo-Json | tee .azure/$Env:AZURE_ENV_NAME/resnames.json
+          $r | ConvertTo-Json | Set-Content ".azure/$Env:AZURE_ENV_NAME/resnames.json" -Encoding utf8
 
       - name: Install azd
         uses: Azure/setup-azd@v2
@@ -102,12 +102,12 @@ jobs:
             throw 'AZURE_RESOURCE_GROUP must be configured'
           }
 
-          mkdir .azure/$Env:AZURE_ENV_NAME
-          $r = gc resnames.empty.json | ConvertFrom-Json
+          New-Item -ItemType Directory -Force ".azure/$Env:AZURE_ENV_NAME" | Out-Null
+          $r = Get-Content resnames.empty.json | ConvertFrom-Json
           $r.resourceGroup = $Env:AZURE_RESOURCE_GROUP
           # TODO: to be completed
 
-          $r | ConvertTo-Json | tee .azure/$Env:AZURE_ENV_NAME/resnames.json
+          $r | ConvertTo-Json | Set-Content ".azure/$Env:AZURE_ENV_NAME/resnames.json" -Encoding utf8
 
       - name: Install azd
         uses: Azure/setup-azd@v2
